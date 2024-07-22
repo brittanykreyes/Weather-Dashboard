@@ -1,18 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
     const apiKey = '3a0638f327f17df983c673c21bbe04e4';
-    // Button to get weather and forecast
     const getWeatherBtn = document.getElementById('getWeatherBtn');
     getWeatherBtn.addEventListener('click', getWeatherAndForecast);
-    // Load search history from localStorage
     loadSearchHistory();
-    // Function to fetch Current Weather and Forecast
     function getWeatherAndForecast() {
         const city = document.getElementById('cityInput').value.trim();
         if (city === '') {
             alert('Please enter a city name.');
             return;
         }
-        // API URLs to get current weather and forecast in Fahrenheit
         const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
         const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=imperial`;
         fetch(weatherUrl)
@@ -29,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 addToSearchHistory(city);
             });
     }
-    // Function to display current weather
+    
     function displayCurrentWeather(data) {
         const currentWeather = document.getElementById('currentWeather');
         currentWeather.innerHTML = '';
@@ -46,14 +42,12 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         currentWeather.appendChild(weatherCard);
     }
-    // Function to display forecast data
+    
     function displayForecast(data) {
         const forecastWeather = document.getElementById('forecastWeather');
         forecastWeather.innerHTML = '';
-        // Loop through the forecast data
-        for (let i = 0; i < data.list.length; i += 8) { // Increment by 8 to get once per day
-            const dailyForecast = data.list[i]; // Take the forecast data for once per day
-            // Getting Forecast Icon
+        for (let i = 0; i < data.list.length; i += 8) { 
+            const dailyForecast = data.list[i]; 
             const weatherIcon = `http://openweathermap.org/img/wn/${dailyForecast.weather[0].icon}@2x.png`;
             const forecastCard = document.createElement('div');
             forecastCard.classList.add('forecast-card');
@@ -63,7 +57,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const description = dailyForecast.weather[0].description;
             const windSpeed = dailyForecast.wind.speed;
             const humidity = dailyForecast.main.humidity;
-            // Create forecast item
             const forecastItem = document.createElement('div');
             forecastItem.classList.add('forecast-item');
             forecastItem.innerHTML = `
@@ -78,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
             forecastWeather.appendChild(forecastCard);
         }
     }
-    // Function to add city to search history
+    
     function addToSearchHistory(city) {
         let searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
         if (!searchHistory.includes(city)) {
@@ -87,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
             updateSearchHistory();
         }
     }
-    // Function to load search history from localStorage
+  
     function loadSearchHistory() {
         updateSearchHistory();
         const historyList = document.getElementById('historyList');
@@ -99,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    // Function to update search history in the DOM
+   
     function updateSearchHistory() {
         const historyList = document.getElementById('historyList');
         historyList.innerHTML = '';
